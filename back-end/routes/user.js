@@ -1,12 +1,13 @@
 let express = require('express');
 let router = express.Router();
 // 导入sql模块
-let mysql = require('mysql');
-let dbConfig = require('../db/db');
-let userSQL = require('../db/UserSQL');
+// let mysql = require('mysql');
+// let dbConfig = require('../config/db');
+// let userSQL = require('../db/UserSQL');
+let user = require('../db/user');
 
 // 使用db.js的配置信息创建一个mysql链接池
-let pool = mysql.createPool(dbConfig.mysql);
+// let pool = mysql.createPool(dbConfig.mysql);
 // 响应一个json数据
 let responseJSON = function(res, req) {
     if (typeof req === 'undefined') {
@@ -19,8 +20,11 @@ let responseJSON = function(res, req) {
 router.get('/addUser', function(req, res, next) {
     // 从链接池获取链接
     pool.getConnection(function(err, connection) {
+        // req.query: 用来接收get方式提交的参数
+        // req.body: 用来接收post提交的参数，express处理post请求通过中间件bodyParser
+        // req.params: 两种都能接收到
         //获取前台页面传过来的参数
-        var param = req.query || req.params;
+        let param = req.query || req.params;
         // 建立链接，添加一个用户的信息
         connection.query(userSQL.insert, [param.id, param.name], function(err, result) {
             if(result) {
@@ -36,5 +40,15 @@ router.get('/addUser', function(req, res, next) {
             connection.release();
         })
     })
+    // let param = req.query || req.params;
+    // user.adduser(param.id, param.username, param.userpass).then(function(err, result) {
+    //     if (result) {
+    //         resule = {
+    //             code: 200,
+    //             msg: '增加成功'
+    //         }
+    //     }
+    //     responseJSON(res, result);
+    // }) 
 })
 module.exports = router;

@@ -5,6 +5,8 @@ let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let routes = require('./routes/index');
 let users = require('./routes/user');
+// let session = require('express-session');
+let bodyParser = require('body-parser');
 
 
 let port = process.env.PORT || 9999;
@@ -15,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// app.user(session());
 
 //使用路由
 app.use('/', routes);
@@ -31,6 +34,7 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
+  console.log(22222222, err);
   res.status(err.status || 500);
   res.render('error');
 });
