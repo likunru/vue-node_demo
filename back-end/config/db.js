@@ -1,7 +1,7 @@
 // 配置mysql
 let Sequelize = require('sequelize')
-module.exports = new Sequelize('test_lkr', 'root', 'xxxxxx', {
-    host: 'xxxxxxxxx',
+module.exports = new Sequelize('xxxxxx', 'root', 'xxxxxx', {
+    host: 'xxxxxxx',
     dialect: 'mysql',
     pool: {
         max: 5, // 链接池中最大链接数量

@@ -1,7 +1,7 @@
 <template>
   <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm form-layout">
      <el-form-item label="用户名" prop="username">
-      <el-input v-model.number="ruleForm2.username"></el-input>
+      <el-input v-model="ruleForm2.username"></el-input>
     </el-form-item>
     <el-form-item label="密码" prop="pass">
       <el-input type="password" v-model="ruleForm2.pass" autocomplete="off"></el-input>
@@ -16,11 +16,15 @@
   </el-form>
 </template>
 <script>
+import httpServer from '@/service/index'
+import {Message} from 'element-ui'
 export default {
   data () {
     var checkUsername = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('用户名不能为空'))
+      } else {
+        callback()
       }
     }
     var validatePass = (rule, value, callback) => {
@@ -65,15 +69,28 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          this.FnRegist(this.ruleForm2)
         } else {
           console.log('error submit!!')
           return false
         }
       })
     },
-    resetForm (formName) {
-      this.$refs[formName].resetFields()
+    FnRegist (data) {
+      httpServer.register(data)
+        .then(
+          (resData) => {
+            let data = resData.data
+            if (data.status === 1) {
+              Message({message: data.msg, type: 'success'})
+            } else {
+              Message({message: data.msg, type: 'error'})
+            }
+          },
+          (err) => {
+            console.log('err', err)
+          }
+        )
     }
   }
 }

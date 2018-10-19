@@ -4,7 +4,7 @@ let dbConfig = require('../config/db');
 // 创建model
 let userinfo = dbConfig.define('userinfo', {
     id: {
-      type: Sequelize.INTEGER(11), //指定值的类型
+      type: Sequelize.STRING, //指定值的类型
       field: 'id',
       primaryKey: true
     },
@@ -31,17 +31,22 @@ let userinfo = dbConfig.define('userinfo', {
 let userInfo = userinfo.sync({forse: false});
 
 
-// 添加新的用户
-exports.adduser = function(id, UserName, UserPass) {
-    // 向user表中插入数据
-    return userInfo.create({
+// 注册
+exports.register = function(id, UserName, UserPass) {
+    // 向userInfo表中插入数据
+    return userinfo.create({
         id: id,
         userName: UserName,
-        userPass: userPass
+        userPass: UserPass
     })
 }
 
-//通过用户名查找
+// 登录
 exports.findByName = function (userName) {
-    return userInfo.find({where: {userName: userName}})
+    return userinfo.find({where: {userName: userName}})
+}
+
+//通过id查找
+exports.findByID = function (id) {
+    return userinfo.find({where: {id: id}})
 }
