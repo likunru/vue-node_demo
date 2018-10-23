@@ -14,5 +14,12 @@ export default {
       url: '/api/regist',
       data: data
     })
+  },
+  logOut (data) {
+    return Http({
+      method: 'post',
+      url: '/api/logOut',
+      data: data
+    })
   }
 }

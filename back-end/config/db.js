@@ -1,7 +1,7 @@
-// 配置mysql
+// 配置mysql  tribedb
 let Sequelize = require('sequelize')
-module.exports = new Sequelize('xxxxxx', 'root', 'xxxxxx', {
-    host: 'xxxxxxx',
+module.exports = new Sequelize('test_lkr', 'root', '4CbPsJJo', {
+    host: '101.251.234.164',
     dialect: 'mysql',
     pool: {
         max: 5, // 链接池中最大链接数量

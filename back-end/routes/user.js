@@ -2,6 +2,7 @@ let express = require('express');
 let router = express.Router();
 let responseJSON = require('../util/responseJSON')
 let uuid = require('node-uuid');
+let crypto = require('crypto');
 // 导入sql模块
 // let mysql = require('mysql');
 // let dbConfig = require('../config/db');
@@ -39,7 +40,10 @@ router.post('/regist', function(req, res, next) {
     let data = {};
     user.findByName(param.username).then(function(result) {
         if (!result) { // 返回null说明用户名不存在
-            user.register(uid, param.username, param.pass).then(function(result) {
+            // 使用md5对密码进行加密
+            let md5 = crypto.createHash('md5');
+            let userPwd = md5.update(param.pass).digest('hex');
+            user.register(uid, param.username, userPwd).then(function(result) {
                 if (result) {
                     data = {status: 1, msg: '注册成功！'};
                 } else {
@@ -63,10 +67,15 @@ router.post('/login', function (req, res, next) {
             result = {status: 0, msg: '用户名不存在！'};
         } else {
            let pass = result.userPass;
+           // 使用md5对登录密码进行加密后进行比对
+           let md5 = crypto.createHash('md5');
+           let userPwd = md5.update(param.pass).digest('hex');
            // 输入密码不正确
-           if (pass !== param.pass) {
+           if (pass !== userPwd) {
              result = {status: 0, msg: '密码不正确，请重新输入！'};
            } else {
+             req.session.login = '1'  
+             req.session.user = param.username;
              result = {status: 1, msg: '登录成功！'}; 
            }
         }
@@ -74,5 +83,10 @@ router.post('/login', function (req, res, next) {
     }).catch(function(err) {
        return
     })
+})
+
+// 登出
+router.post('/signOut', function (req, res, next) {
+
 })
 module.exports = router;

@@ -11,7 +11,7 @@
     </el-form-item>
     <el-form-item>
        <el-button type="primary" @click="submitForm('ruleForm2')">注册</el-button>
-       <router-link :to="{name:'login'}" class="m-left20">登录</router-link>
+       <router-link :to="{name:'LOGIN'}" class="m-left20">登录</router-link>
     </el-form-item>
   </el-form>
 </template>
@@ -83,6 +83,7 @@ export default {
             let data = resData.data
             if (data.status === 1) {
               Message({message: data.msg, type: 'success'})
+              this.$router.push({name: 'LOGIN'})
             } else {
               Message({message: data.msg, type: 'error'})
             }
