@@ -15,10 +15,6 @@ let userinfo = dbConfig.define('userinfo', {
     userPass: {
         type: Sequelize.STRING,
         field: 'userPass'
-    },
-    token: {
-        type: Sequelize.STRING,
-        field: 'token'
     }
 },{
     // 如果为true,则表的名称和model相同，即user

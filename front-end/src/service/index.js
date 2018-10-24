@@ -21,5 +21,11 @@ export default {
       url: '/api/logOut',
       data: data
     })
+  },
+  get_userInfo () {
+    return Http({
+      method: 'get',
+      url: '/api/user'
+    })
   }
 }

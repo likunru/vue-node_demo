@@ -77,7 +77,11 @@ export default {
       })
     },
     FnRegist (data) {
-      httpServer.register(data)
+      var reqData = {
+        pass: data.pass,
+        username: data.username
+      }
+      httpServer.register(reqData)
         .then(
           (resData) => {
             let data = resData.data

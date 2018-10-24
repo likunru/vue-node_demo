@@ -48,7 +48,6 @@ export default {
   },
   methods: {
     submitForm (formName) {
-      console.log(222222, formName)
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.FnLogin(this.ruleForm2)

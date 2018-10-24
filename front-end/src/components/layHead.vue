@@ -13,7 +13,7 @@
 import httpServer from '@/service/index'
 import { Message } from 'element-ui'
 export default {
-  method: {
+  methods: {
     FnLogOut () {
       let data = {}
       httpServer.logOut(data)
@@ -30,7 +30,21 @@ export default {
             console.log('err', err)
           }
         )
+    },
+    FnGetUserInfo () {
+      httpServer.get_userInfo()
+        .then(
+          (resData) => {
+
+          },
+          (err) => {
+            console.log('err', err)
+          }
+        )
     }
+  },
+  mounted () {
+    this.FnGetUserInfo()
   }
 }
 </script>

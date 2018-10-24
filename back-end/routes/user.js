@@ -3,6 +3,7 @@ let router = express.Router();
 let responseJSON = require('../util/responseJSON')
 let uuid = require('node-uuid');
 let crypto = require('crypto');
+let Utils = require('../util/util');
 // 导入sql模块
 // let mysql = require('mysql');
 // let dbConfig = require('../config/db');
@@ -74,9 +75,11 @@ router.post('/login', function (req, res, next) {
            if (pass !== userPwd) {
              result = {status: 0, msg: '密码不正确，请重新输入！'};
            } else {
-             req.session.login = '1'  
-             req.session.user = param.username;
-             result = {status: 1, msg: '登录成功！'}; 
+             // 使用token进行登陆验证  
+             let uid = result.id;
+             let token = Utils.generateToken({uid});
+             res.cookie('token', token);
+             result = {status: 1, msg: '登录成功！', data: {token}}; 
            }
         }
         responseJSON(res, result); 
@@ -88,5 +91,19 @@ router.post('/login', function (req, res, next) {
 // 登出
 router.post('/signOut', function (req, res, next) {
 
+})
+
+// 获取用户信息
+router.get('/api/user', function (req, res, next) {
+    let uid = req;
+    let resData = {}
+    user.findByID(uid).then(function(result) {
+        if (result) {
+            resData = {status: 1, msg: '', data: {result}}; 
+        } else {
+            resData = {status: 0, msg: '获取用户信息失败！'};  
+        }
+        responseJSON(res, resData); 
+    })
 })
 module.exports = router;
