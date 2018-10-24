@@ -35,7 +35,6 @@ app.use(function(req, res, next) {
   let result = {}
   if (url.indexOf('/api/user') > -1) {
     let loginedtoken = res.cookie.get('token');
-    console.log(222, loginedtoken);
     if (loginedtoken) {
       let result = Utils.verifyToekn(loginedtoken);
       let {uid} = result;
